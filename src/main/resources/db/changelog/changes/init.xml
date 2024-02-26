@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-country-table-init" author="Max Bogovick">
+        <createTable tableName="country">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_code" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Creation of the state table -->
+    <changeSet id="create-state-table-init" author="Max Bogovick">
+        <createTable tableName="state">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_state_country_id"
+                             referencedTableName="country" referencedColumnNames="id" deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Adding a foreign key constraint from state to country -->
+    <changeSet id="add-fk-state-country-init" author="Max Bogovick">
+        <addForeignKeyConstraint constraintName="fk_state_country"
+                                 baseTableName="state" baseColumnNames="country_id"
+                                 referencedTableName="country" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- Creation of the district table -->
+    <changeSet id="create-district-table-init" author="Max Bogovick">
+        <createTable tableName="district">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_district_state_id"
+                             referencedTableName="state" referencedColumnNames="id"
+                             deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Adding a foreign key constraint from district to state -->
+    <changeSet id="add-fk-district-state-init" author="Max Bogovick">
+        <addForeignKeyConstraint constraintName="fk_district_state"
+                                 baseTableName="district" baseColumnNames="state_id"
+                                 referencedTableName="state" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- Instructor Profile Table -->
+    <changeSet id="instructor_profile_init" author="Max Bogovick">
+        <createTable tableName="instructor_profile">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="experience" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vehicle_name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vehicle_type" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vehicle_year" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vehicle_transmission_type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bio" type="varchar(3000)"/>
+            <column name="sex" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="private_instructor" type="boolean"/>
+            <column name="school_instructor" type="boolean"/>
+            <column name="additional_break" type="boolean"/>
+            <column name="main_profile_image_url" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vehicle_image_urls" type="varchar(3000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="legal_document_urls" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="driver_id_urls" type="varchar(600)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phones" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_user" type="varchar(300)"/>
+            <column name="created_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+        <addUniqueConstraint tableName="instructor_profile" columnNames="username,email"/>
+    </changeSet>
+
+    <!-- Instructor District Join Table -->
+    <changeSet id="instructor_district_init" author="Max Bogovick">
+        <createTable tableName="instructor_district">
+            <column name="district_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="instructor_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="instructor_district" columnNames="district_id, instructor_id"
+                       constraintName="pk_instructor_district"/>
+        <addForeignKeyConstraint constraintName="fk_instructor_district_district" baseTableName="instructor_district"
+                                 baseColumnNames="district_id"
+                                 referencedTableName="district" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+        <addForeignKeyConstraint constraintName="fk_instructor_district_profile" baseTableName="instructor_district"
+                                 baseColumnNames="instructor_id"
+                                 referencedTableName="instructor_profile" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- Instructor Transmission Type Join Table -->
+    <changeSet id="instructor_transmission_type_init" author="Max Bogovick">
+        <createTable tableName="instructor_transmission_type">
+            <column name="instructor_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transmission_type" type="varchar(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="instructor_transmission_type" columnNames="instructor_id, transmission_type"
+                       constraintName="pk_instructor_transmission"/>
+        <addForeignKeyConstraint constraintName="fk_instructor_transmission_profile"
+                                 baseTableName="instructor_transmission_type" baseColumnNames="instructor_id"
+                                 referencedTableName="instructor_profile" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- Instructor Vehicle Type Join Table -->
+    <changeSet id="instructor_vehicle_type_init" author="Max Bogovick">
+        <createTable tableName="instructor_vehicle_type">
+            <column name="instructor_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vehicle_type" type="varchar(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="instructor_vehicle_type" columnNames="instructor_id, vehicle_type"
+                       constraintName="pk_instructor_vehicle"/>
+        <addForeignKeyConstraint constraintName="fk_instructor_vehicle_profile" baseTableName="instructor_vehicle_type"
+                                 baseColumnNames="instructor_id"
+                                 referencedTableName="instructor_profile" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+
+</databaseChangeLog>

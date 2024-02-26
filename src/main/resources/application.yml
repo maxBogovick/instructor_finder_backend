@@ -1,0 +1,21 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    password: adm
+    username: autod
+    url: jdbc:postgresql://localhost:13555/autod
+  liquibase:
+    change-log: db/changelog/main.xml
+    enabled: true
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  docker:
+    compose:
+      enabled: true
+      skip:
+        in-tests: false

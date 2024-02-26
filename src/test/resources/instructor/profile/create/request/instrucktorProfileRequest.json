@@ -1,0 +1,53 @@
+{
+  "username": "Шпарута Олег Батькович",
+  "experience": 1990,
+  "email": "380634153755@justschool.me",
+  "vehicleName": "Volkswagen passat b7",
+  "vehicleType": "CAR",
+  "vehicleYear": 2013,
+  "transmissionType": "AUTOMAT",
+  "selectedDistricts": [
+    "PRIMORSKY",
+    "KYIVSKY",
+    "MALYNOVSKY",
+    "SUVOROVSKY"
+  ],
+  "instructorTransmissionTypes": [
+    "MANUAL",
+    "AUTOMAT"
+  ],
+  "instructorVehicleTypes": [
+    "CAR",
+    "TRACK"
+  ],
+  "bio": "Професійний інструктор з водіння та викладач теорії ПДР.\n\nДосвід у навчанні понад 20 років. Водійський стаж понад 30 років. У викладанні використовую виключно унікальну і неподібну до інших методику навчання. Ця методика показала свою ефективність навіть у водіїв із досвідом, які до цього часу відчували труднощі при паркуваннях у густонаселеному місті з обмеженим місцем для маневрів.",
+  "sex": "MAN",
+  "privateInstructor": true,
+  "schoolInstructor": true,
+  "additionalBreak": true,
+  "phones": [
+    {
+      "value": "0634153755"
+    },
+    {
+      "value": "08912121212"
+    }
+  ],
+  "mainProfileImageUrl": "/uploads/05-02-2024/oleg-icon-1707128558364-31440459.png",
+  "vehicleImageUrls": [
+    "/uploads/05-02-2024/oleg-car-1707128558747-585201266.png",
+    "/uploads/05-02-2024/main-bg-1707128559585-931651765.png",
+    "/uploads/05-02-2024/DALL·E 2024-01-11 12.29.47 - Create images depicting driving in different seasons, each incorporating the theme of searching for driving instructors. The first image should show a-1707128560281-245298299.png",
+    "/uploads/05-02-2024/main-bg-2-1707128560877-664416370.png",
+    "/uploads/05-02-2024/main-bg-4-1707128561487-306772811.png",
+    "/uploads/05-02-2024/DALL·E 2024-01-11 11.52.30 - An image depicting a professional and business-oriented background for a website dedicated to searching for driving instructors. The background should-1707128562062-903938772.png"
+  ],
+  "driverIdUrls": [
+    "/uploads/05-02-2024/cover (3)-1707128562705-539887683.png"
+  ],
+  "legalDocumentUrls": [
+    "/uploads/05-02-2024/mains (2)-1707128563016-937074245.png",
+    "/uploads/05-02-2024/mains-1707128563329-252030032.png",
+    "/uploads/05-02-2024/cover (6)-1707128563661-618649982.png"
+  ]
+}

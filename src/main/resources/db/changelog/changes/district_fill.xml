@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Inserting Country: Ukraine -->
+    <changeSet id="insert-country-ukraine-001" author="Max Bogovick">
+        <insert tableName="country">
+            <column name="name" value="Ukraine"/>
+            <column name="country_code" value="UKRAINE"/>
+        </insert>
+    </changeSet>
+
+    <!-- Inserting State: Odessa -->
+    <changeSet id="insert-state-odessa-002" author="Max Bogovick">
+        <insert tableName="state">
+            <column name="name" value="Odessa"/>
+            <column name="code" value="ODESSA"/>
+            <!-- Assuming the ID of Ukraine is 1, adjust if necessary -->
+            <column name="country_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <!-- Inserting Districts: Primorsky, Kyivsky, Malynovsky, Suvorovsky -->
+    <changeSet id="insert-districts-odessa-003" author="Max Bogovick">
+        <insert tableName="district">
+            <column name="name" value="Primorsky"/>
+            <column name="code" value="PRIMORSKY"/>
+            <!-- Assuming the ID of Odessa State is 1, adjust if necessary -->
+            <column name="state_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="district">
+            <column name="name" value="Kyivsky"/>
+            <column name="code" value="KYIVSKY"/>
+            <column name="state_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="district">
+            <column name="name" value="Malynovsky"/>
+            <column name="code" value="MALYNOVSKY"/>
+            <column name="state_id" valueNumeric="1"/>
+        </insert>
+        <insert tableName="district">
+            <column name="name" value="Suvorovsky"/>
+            <column name="code" value="SUVOROVSKY"/>
+            <column name="state_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
