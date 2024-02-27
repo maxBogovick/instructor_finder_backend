@@ -1,4 +1,4 @@
-package com.bogovick.family.backend.instructor.repository.filter;
+package com.bogovick.family.backend.instructor.core.repository.filter;
 
 import com.bogovick.family.backend.instructor.api.model.InstructorFilterDTO;
 import com.bogovick.family.backend.instructor.api.model.TransmissionType;

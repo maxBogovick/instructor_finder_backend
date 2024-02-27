@@ -12,9 +12,9 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface InstructorProfileMapper {
@@ -23,7 +23,16 @@ public interface InstructorProfileMapper {
   @Mapping(target = "instructorTransmissionTypes", expression = "java(getInstructorTransmissionTypes(entity))")
   @Mapping(target = "instructorVehicleTypes", expression = "java(getInstructorVehicleTypes(entity))")
   @Mapping(target = "phones", expression = "java(getPhones(entity))")
-  InstructorProfileDto toDto(InstructorProfileEntity entity);
+  @Mapping(target = "mainProfileImageUrl", expression = "java(avatarUrl)")
+  @Mapping(target = "driverIdUrls", expression = "java(drivingCardUrls)")
+  @Mapping(target = "vehicleImageUrls", expression = "java(vehicleUrls)")
+  @Mapping(target = "legalDocumentUrls", expression = "java(licenseUrls)")
+  InstructorProfileDto toDto(InstructorProfileEntity entity,
+                             UUID avatarUrl,
+                             List<UUID> drivingCardUrls,
+                             List<UUID> vehicleUrls,
+                             List<UUID> licenseUrls
+  );
 
   default List<String> getPhones(InstructorProfileDto dto) {
     return CollectionUtils.isEmpty(dto.phones())
@@ -62,6 +71,4 @@ public interface InstructorProfileMapper {
   @Mapping(target = "vehicleTypes", ignore = true)
   @Mapping(target = "phones", expression = "java(getPhones(dto))")
   InstructorProfileEntity toEntity(InstructorProfileDto dto);
-
-  Collection<InstructorProfileDto> toDtos(List<InstructorProfileEntity> list);
 }

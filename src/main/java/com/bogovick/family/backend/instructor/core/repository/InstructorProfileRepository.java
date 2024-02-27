@@ -1,4 +1,4 @@
-package com.bogovick.family.backend.instructor.repository;
+package com.bogovick.family.backend.instructor.core.repository;
 
 import com.bogovick.family.backend.instructor.core.entity.InstructorProfileEntity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

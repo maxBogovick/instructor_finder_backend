@@ -1,5 +1,7 @@
 package com.bogovick.family.backend.instructor.controller;
 
+import com.bogovick.family.backend.image.api.model.ImageContentDto;
+import com.bogovick.family.backend.image.api.model.ImageContentType;
 import com.bogovick.family.backend.instructor.api.model.InstructorFilterDTO;
 import com.bogovick.family.backend.instructor.api.model.InstructorProfileDto;
 import com.bogovick.family.backend.instructor.api.model.PhonesDto;
@@ -14,11 +16,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +62,10 @@ public class InstructorProfileControllerWireMockTest {
             .withHeader("Content-Type", "application/json"))); // Adjust the response body as needed*/
   }
 
+  /*private static MockMvc mockMvc = MockMvcBuilders
+      .standaloneSetup(new FileController())
+      .build()*/
+
   @Test
   void testCreateInstructorProfile() throws IOException {
     //String profileJson = JsonUtil.loadJsonFromFile("instructor/profile/create/request/instrucktorProfileRequest.json");
@@ -71,10 +86,10 @@ public class InstructorProfileControllerWireMockTest {
         .schoolInstructor(faker.bool().bool())
         .additionalBreak(faker.bool().bool())
         .phones(IntStream.range(0, 2).mapToObj(i -> new PhonesDto(faker.phoneNumber().phoneNumber())).collect(Collectors.toList()))
-        .mainProfileImageUrl(faker.avatar().image())
+        /*.mainProfileImageUrl(faker.avatar().image())
         .vehicleImageUrls(IntStream.range(0, 2).mapToObj(i -> faker.internet().image()).collect(Collectors.toList()))
         .legalDocumentUrls(IntStream.range(0, 2).mapToObj(i -> faker.internet().url()).collect(Collectors.toList()))
-        .driverIdUrls(IntStream.range(0, 2).mapToObj(i -> faker.internet().url()).collect(Collectors.toList()))
+        .driverIdUrls(IntStream.range(0, 2).mapToObj(i -> faker.internet().url()).collect(Collectors.toList()))*/
         .build();
 
     //String profileJson = objectMapper.writeValueAsString(profile);
@@ -93,6 +108,33 @@ public class InstructorProfileControllerWireMockTest {
     Assertions.assertNotNull(exchange.id());
     Assertions.assertFalse(exchange.instructorTransmissionTypes().isEmpty());
     System.out.println(exchange);
+    MultipartBodyBuilder builder = new MultipartBodyBuilder();
+    final FileSystemResource part = new FileSystemResource("C:/Users/Maxim/Downloads/diagram.png");
+    builder.part("file", part);
+
+    final ImageContentDto imageDto = restClient.post().uri("/api/image/upload/" + exchange.id()
+            + "/" + ImageContentType.AVATAR.name() + "/0")
+        .contentType(MediaType.MULTIPART_FORM_DATA)
+        .body(builder.build())
+        .accept(MediaType.APPLICATION_JSON)
+        .exchange((req, response) -> {
+          if (response.getStatusCode().equals(HttpStatus.OK)) {
+            return objectMapper.readValue(response.getBody(), ImageContentDto.class);
+          } else {
+            throw new RuntimeException();
+          }
+        });
+    System.out.println(imageDto);
+
+    final byte[] result = restClient.get().uri("/api/image/" + imageDto.id())
+        .exchange((req, response) -> {
+          if (response.getStatusCode().equals(HttpStatus.OK)) {
+            return response.getBody().readAllBytes();
+          } else {
+            throw new RuntimeException();
+          }
+        });
+    Assertions.assertArrayEquals(part.getContentAsByteArray(), result);
   }
 
   @Test

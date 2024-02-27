@@ -92,10 +92,10 @@ public class InstructorProfileEntity {
   @Column(nullable = false, length = 300, name = "phones")
   private List<String> phones = new ArrayList<>();
 
-  @Column(nullable = false, length = 300)
-  private String mainProfileImageUrl;
+  /*@Column(nullable = false, length = 300)
+  private String mainProfileImageUrl;*/
 
-  @Convert(converter = CollectionToStringConverter.class)
+  /*@Convert(converter = CollectionToStringConverter.class)
   @Column(nullable = false, length = 3000, name = "vehicle_image_urls")
   private List<String> vehicleImageUrls = new ArrayList<>();
 
@@ -105,7 +105,7 @@ public class InstructorProfileEntity {
 
   @Convert(converter = CollectionToStringConverter.class)
   @Column(nullable = false, length = 600, name = "driver_id_urls")
-  private List<String> driverIdUrls = new ArrayList<>();
+  private List<String> driverIdUrls = new ArrayList<>();*/
 
   @Column(name = "created_user", length = 300)
   private String createdUserInfo;

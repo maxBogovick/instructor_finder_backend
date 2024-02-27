@@ -108,18 +108,6 @@
             <column name="private_instructor" type="boolean"/>
             <column name="school_instructor" type="boolean"/>
             <column name="additional_break" type="boolean"/>
-            <column name="main_profile_image_url" type="varchar(300)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="vehicle_image_urls" type="varchar(3000)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="legal_document_urls" type="varchar(1000)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="driver_id_urls" type="varchar(600)">
-                <constraints nullable="false"/>
-            </column>
             <column name="phones" type="varchar(300)">
                 <constraints nullable="false"/>
             </column>
@@ -148,6 +136,42 @@
                                  onDelete="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_instructor_district_profile" baseTableName="instructor_district"
                                  baseColumnNames="instructor_id"
+                                 referencedTableName="instructor_profile" referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <!-- image_content table -->
+    <changeSet id="image_content_init" author="Max Bogovick">
+        <createTable tableName="image_content">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="file_name" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content_type" type="varchar(50)"/>
+            <column name="size" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_path" type="varchar(400)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="profile_content_type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_order" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="profile_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex indexName="idx_im_cont_type_profile_id" tableName="image_content">
+            <column name="profile_content_type"/>
+            <column name="profile_id"/>
+        </createIndex>
+        <addForeignKeyConstraint constraintName="fk_im_cont_profile_id" baseTableName="image_content"
+                                 baseColumnNames="profile_id"
                                  referencedTableName="instructor_profile" referencedColumnNames="id"
                                  onDelete="CASCADE"/>
     </changeSet>

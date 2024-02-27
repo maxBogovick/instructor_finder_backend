@@ -1,3 +1,7 @@
+file:
+  storage:
+    base-dir: "c:/temp"
+
 spring:
   threads:
     virtual:
