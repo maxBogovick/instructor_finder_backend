@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
 @Component
@@ -17,6 +18,8 @@ public class FileUtil {
   public byte[] getSmallContent(final ImageContentEntity image) {
     try {
       return Files.readAllBytes(getFullPath(image));
+    } catch(NoSuchFileException e) {
+      return null;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
