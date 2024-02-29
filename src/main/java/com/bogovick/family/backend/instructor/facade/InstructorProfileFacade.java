@@ -1,5 +1,6 @@
 package com.bogovick.family.backend.instructor.facade;
 
+import com.bogovick.family.backend.common.api.model.BackendErrorDto;
 import com.bogovick.family.backend.image.api.model.ImageContentType;
 import com.bogovick.family.backend.image.service.ImageStoreContentService;
 import com.bogovick.family.backend.instructor.api.model.EnumCacheUtil;
@@ -14,6 +15,8 @@ import com.bogovick.family.backend.location.core.entity.DistrictEntity;
 import com.bogovick.family.backend.location.service.DistrictService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -25,6 +28,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static com.bogovick.family.backend.common.api.model.BackendErrorDto.BackendErrorCode.UNKNOWN_EXCEPTION;
+import static com.bogovick.family.backend.common.api.model.BackendErrorDto.BackendErrorCode.USERNAME_PASSWORD_ALREADY_EXISTS;
 
 @Service
 @RequiredArgsConstructor
@@ -43,8 +49,24 @@ public class InstructorProfileFacade {
     fillVehicleTypes(profile, entity);
     fillTransmissionTypes(profile, entity);
 
-    return instructorProfileService.saveInstructorProfile(entity).map(item ->
-        mapper.toDto(item, null, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()));
+    try {
+      return instructorProfileService.saveInstructorProfile(entity).map(item ->
+          mapper.toDto(item, null, Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), null));
+    } catch (Exception e) {
+      val error = BackendErrorDto.builder();
+      if (e instanceof DataIntegrityViolationException) {
+        error
+            .errorCode(USERNAME_PASSWORD_ALREADY_EXISTS)
+            .errorMessage(e.getMessage());
+      } else {
+        error
+            .errorCode(UNKNOWN_EXCEPTION)
+            .errorMessage(e.getMessage());
+      }
+      return Optional.of(mapper.toDto(null, null, Collections.emptyList(), Collections.emptyList(),
+          Collections.emptyList(),
+          error.build()));
+    }
   }
 
   private CompletableFuture<UUID> getSingleImageAsync(ImageContentType imageContentType, Long id) {
@@ -96,6 +118,6 @@ public class InstructorProfileFacade {
         vehicleUrls,
         legalDocumentUrls
     ).join();
-    return mapper.toDto(entity, avatarUrl.join(), drivingCardUrls.join(), vehicleUrls.join(), legalDocumentUrls.join());
+    return mapper.toDto(entity, avatarUrl.join(), drivingCardUrls.join(), vehicleUrls.join(), legalDocumentUrls.join(), null);
   }
 }

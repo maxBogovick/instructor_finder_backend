@@ -28,7 +28,9 @@ public class InstructorProfileController {
 
   @PostMapping("/search")
   public Collection<InstructorProfileDto> search(@RequestBody InstructorFilterDTO filter) {
-    return instructorProfileFacade.search(filter);
+    return instructorProfileFacade.search(filter == null?
+        InstructorFilterDTO.builder().validated(true).build()
+        : filter );
   }
 
   @GetMapping("/profile/{id}")

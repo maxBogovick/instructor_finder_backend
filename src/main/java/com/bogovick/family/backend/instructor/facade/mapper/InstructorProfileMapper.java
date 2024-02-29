@@ -1,5 +1,6 @@
 package com.bogovick.family.backend.instructor.facade.mapper;
 
+import com.bogovick.family.backend.common.api.model.BackendErrorDto;
 import com.bogovick.family.backend.instructor.api.model.InstructorProfileDto;
 import com.bogovick.family.backend.instructor.api.model.PhonesDto;
 import com.bogovick.family.backend.instructor.api.model.TransmissionType;
@@ -27,11 +28,13 @@ public interface InstructorProfileMapper {
   @Mapping(target = "driverIdUrls", expression = "java(drivingCardUrls)")
   @Mapping(target = "vehicleImageUrls", expression = "java(vehicleUrls)")
   @Mapping(target = "legalDocumentUrls", expression = "java(licenseUrls)")
+  @Mapping(target = "error", expression = "java(error)")
   InstructorProfileDto toDto(InstructorProfileEntity entity,
                              UUID avatarUrl,
                              List<UUID> drivingCardUrls,
                              List<UUID> vehicleUrls,
-                             List<UUID> licenseUrls
+                             List<UUID> licenseUrls,
+                             BackendErrorDto error
   );
 
   default List<String> getPhones(InstructorProfileDto dto) {
@@ -41,24 +44,36 @@ public interface InstructorProfileMapper {
   }
 
   default List<PhonesDto> getPhones(InstructorProfileEntity entity) {
+    if (entity == null) {
+      return Collections.emptyList();
+    }
     return CollectionUtils.isEmpty(entity.getPhones())
         ? Collections.emptyList()
         : entity.getPhones().stream().map(PhonesDto::new).toList();
   }
 
   default List<String> getSelectedDistincts(InstructorProfileEntity entity) {
+    if (entity == null) {
+      return Collections.emptyList();
+    }
     return CollectionUtils.isEmpty(entity.getSelectedDistricts())
         ? Collections.emptyList()
         : entity.getSelectedDistricts().stream().map(DistrictEntity::getCode).toList();
   }
 
   default List<String> getInstructorTransmissionTypes(InstructorProfileEntity entity) {
+    if (entity == null) {
+      return Collections.emptyList();
+    }
     return CollectionUtils.isEmpty(entity.getTransmissionTypes())
         ? Collections.emptyList()
         : entity.getTransmissionTypes().stream().map(TransmissionType::name).toList();
   }
 
   default List<String> getInstructorVehicleTypes(InstructorProfileEntity entity) {
+    if (entity == null) {
+      return Collections.emptyList();
+    }
     return CollectionUtils.isEmpty(entity.getVehicleTypes())
         ? Collections.emptyList()
         : entity.getVehicleTypes().stream().map(VehicleType::name).toList();

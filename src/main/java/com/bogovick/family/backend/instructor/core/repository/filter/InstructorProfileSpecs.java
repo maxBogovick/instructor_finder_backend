@@ -57,6 +57,11 @@ public interface InstructorProfileSpecs {
         predicates.add(cb.equal(root.get(InstructorProfileEntity_.privateInstructor), filter.privateInstructor()));
       }
 
+      // validated filter
+      if (filter.validated() != null) {
+        predicates.add(cb.equal(root.get(InstructorProfileEntity_.validated), filter.validated()));
+      }
+
       // SchoolInstructor filter
       if (filter.schoolInstructor() != null) {
         predicates.add(cb.equal(root.get(InstructorProfileEntity_.schoolInstructor), filter.schoolInstructor()));

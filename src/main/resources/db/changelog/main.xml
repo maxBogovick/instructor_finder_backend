@@ -6,5 +6,16 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <include file="db/changelog/changes/init.xml"/>
     <include file="db/changelog/changes/district_fill.xml"/>
+    <include file="db/changelog/changes/instructor_profile_change_1.xml"/>
+    <changeSet id="validated" author="Max Bogovic" runAlways="true">
+        <update tableName="instructor_profile">
+            <column name="validated" valueBoolean="true"/>
+            <where>username LIKE '%Шпарута%'</where>
+        </update>
+        <update tableName="instructor_profile">
+            <column name="validated" valueBoolean="true"/>
+            <where>username LIKE '%Петрак%'</where>
+        </update>
+    </changeSet>
 
 </databaseChangeLog>

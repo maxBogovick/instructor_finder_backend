@@ -23,3 +23,6 @@ spring:
       enabled: true
       skip:
         in-tests: false
+  servlet:
+    multipart:
+      max-file-size: 5MB

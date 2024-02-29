@@ -14,5 +14,6 @@ public record InstructorFilterDTO(String username,
                                   String sex,
                                   Boolean privateInstructor,
                                   Boolean schoolInstructor,
-                                  Boolean additionalBreak) {
+                                  Boolean additionalBreak,
+                                  Boolean validated) {
 }

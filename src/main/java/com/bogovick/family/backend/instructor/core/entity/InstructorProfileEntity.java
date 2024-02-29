@@ -92,6 +92,8 @@ public class InstructorProfileEntity {
   @Column(nullable = false, length = 300, name = "phones")
   private List<String> phones = new ArrayList<>();
 
+  private boolean validated;
+
   /*@Column(nullable = false, length = 300)
   private String mainProfileImageUrl;*/
 

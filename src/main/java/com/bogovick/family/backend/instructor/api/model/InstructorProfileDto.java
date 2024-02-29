@@ -1,5 +1,6 @@
 package com.bogovick.family.backend.instructor.api.model;
 
+import com.bogovick.family.backend.common.api.model.BackendErrorDto;
 import lombok.Builder;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public record InstructorProfileDto(
     List<UUID> legalDocumentUrls,
     List<UUID> driverIdUrls,
     List<PhonesDto> phones,
-    String createdUserInfo
-) {
+    String createdUserInfo,
+    BackendErrorDto error,
+    boolean validated) {
 }
